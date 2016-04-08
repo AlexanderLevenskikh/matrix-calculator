@@ -1,5 +1,5 @@
 {
-  "name": "matrixMultiplication",
+  "name": "matrix-calculator",
   "version": "1.0.0",
   "description": "matrix calculator",
   "main": "index.js",
@@ -13,12 +13,12 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/AlexanderLevenskikh/matrixMultiplication.git"
+    "url": "git+https://github.com/AlexanderLevenskikh/matrix-calculator.git"
   },
   "author": "Alexander Levenskikh",
   "license": "ISC",
   "bugs": {
-    "url": "https://github.com/AlexanderLevenskikh/matrixMultiplication/issues"
+    "url": "https://github.com/AlexanderLevenskikh/matrix-calculator/issues"
   },
-  "homepage": "http://alexanderlevenskikh.github.io/matrixMultiplication/"
+  "homepage": "http://alexanderlevenskikh.github.io/matrix-calculator/"
 }
