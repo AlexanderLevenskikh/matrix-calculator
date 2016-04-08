@@ -1,0 +1,68 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
+    <title>Document</title>
+
+    <!--[if lte IE 9]>
+        <script src="libs/es5-shim.min.js"></script>
+        <script src="libs/ie8.js"></script>
+    <![endif]-->
+
+</head>
+<body>
+    <div class="matrix-calculator">
+        <div class="left-column">
+            <ul class="menu">
+                <li class="buttons-block">
+                    <button class="multiply" id="multiply">Умножить матрицы</button>
+                </li>
+                <li class="buttons-block">
+                    <button class="gray-button clean" id="clean">&nbsp;Очистить матрицы</button>
+                    <button class="gray-button swap" id="swap">&nbsp;Поменять матрицы местами</button>
+                </li>
+                <li class="buttons-block">
+                    <ul class="left-column">
+                        <li class="option">
+                            <input type="radio" name="choose-matrix" id="matrixA-radio">
+                            <label for="matrixA-radio">
+                                <span class="description">Матрица А</span>
+                            </label>
+                        </li>
+                        <li>
+                            <button class="gray-button add" id="add-line">&nbsp;Добавить</button>
+                        </li>
+                        <li>
+                            <button class="gray-button add" id="add-column">&nbsp;Добавить</button>
+                        </li>
+                    </ul>
+
+                    <ul class="right-column">
+                        <li class="option">
+                            <input type="radio" name="choose-matrix" id="matrixB-radio">
+                            <label for="matrixB-radio">
+                                <span class="description">Матрица B</span>
+                            </label>
+                        </li>
+                        <li>
+                            <button class="gray-button delete" id="delete-line">&nbsp;Удалить</button>
+                            <span>строку</span>
+                        </li>
+                        <li>
+                            <button class="gray-button delete" id="delete-column">&nbsp;Удалить</button>
+                            <span>столбец</span>
+                        </li>
+                    </ul>
+                </li>
+                <li class="message">
+                    <span class="error-message"></span>
+                </li>
+            </ul>
+        </div>
+        <div class="right-column" id="right-column"></div>
+    </div>
+
+</body>
+</html>
+
