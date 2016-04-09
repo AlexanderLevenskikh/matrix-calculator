@@ -176,17 +176,17 @@ function createContainer(matrices) {
 }
 
 function firstCallback(row, column) {
-    this.placeholder = 'a' + row + column;
+    this.placeholder = 'a' + ++row + ',' + ++column;
     callback_commonPart.call(this);
 }
 
 function secondCallback(row, column) {
-    this.placeholder = 'b' + row + column;
+    this.placeholder = 'b' + ++row + ',' + ++column;
     callback_commonPart.call(this);
 }
 
 function thirdCallback(row, column) {
-    this.placeholder = 'c' + row + column;
+    this.placeholder = 'c' + ++row + ',' + ++column;
     this.setAttribute("disabled", "disabled");
     callback_commonPart.call(this);
 }
@@ -212,3 +212,5 @@ function changeState(f) {
         f(isItPossibleToMultiply);
     }
 }
+
+module.exports = Calculator;

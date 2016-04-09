@@ -131,13 +131,13 @@ Matrix.prototype.appendTo = function(container) {
  */
 
 Matrix.prototype.addLine = function() {
-    var row = document.createElement('tr'),
-        i = this.columnsNumber;
+    var row = document.createElement('tr');
+
     this.table.appendChild(row);
     this.linesNumber++;
 
-    while (i--) {
-        this.addCellToRow(row);
+    for (var i = 0; i < this.columnsNumber; i++) {
+        this.addCellToRow(row, this.linesNumber-1, i);
     }
 
     return this;
@@ -153,7 +153,7 @@ Matrix.prototype.addColumn = function() {
     this.columnsNumber++;
 
     for (var i = 0; i < this.linesNumber; i++) {
-        this.addCellToRow(lines[i]);
+        this.addCellToRow(lines[i], i, this.columnsNumber-1);
     }
 
     return this;

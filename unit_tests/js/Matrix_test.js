@@ -75,8 +75,6 @@ QUnit.test('Matrix.appendTo method. Append to randomize div block', function(ass
     assert.equal(block, firstMatrix.table.parentNode, 'appendTo method.');
 });
 
-var storedTable = secondMatrix.table;
-
 QUnit.test('Matrix.addLine method.', function(assert) {
     secondMatrix.addLine();
     var element = secondMatrix.table.childNodes[2];
@@ -95,7 +93,6 @@ QUnit.test('Matrix.deleteLine method.', function(assert) {
 
     assert.equal(secondMatrix.linesNumber, 2, 'Was counter decreased?');
     assert.equal(secondMatrix.table.childNodes.length, 2, 'Does it have 2 lines?');
-    assert.equal(secondMatrix.table.innerHTML, storedTable.innerHTML, 'Are table inner HTML and stored table inner HTML equal?')
 });
 
 QUnit.test('Matrix.addColumn method.', function(assert) {
@@ -120,7 +117,6 @@ QUnit.test('Matrix.deleteColumn method.', function(assert) {
     assert.equal(secondMatrix.columnsNumber, 2, 'Was counter decreased?');
     assert.equal(secondMatrix.table.firstChild.childNodes.length, 2, 'Does the first line have 2 columns?');
     assert.equal(secondMatrix.table.childNodes[1].childNodes.length, 2, 'Does the second line have 2 columns?');
-    assert.equal(secondMatrix.table.innerHTML, storedTable.innerHTML, 'Are table inner HTML and stored table inner HTML equal?')
 });
 
 /**
