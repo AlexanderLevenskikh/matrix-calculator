@@ -12,7 +12,9 @@
   "scripts": {
     "build-js": "browserify js/main.js > js/build.js",
     "watch-js": "watchify js/main.js -o js/build.js",
-    "build-tests": "browserify js/unit_tests/Matrix_test.js > js/unit_tests/build/Matrix_test.js"
+    "build-matrix-tests": "browserify unit_tests/js/Matrix_test.js > unit_tests/js/build/Matrix_test.js",
+    "build-calculator-tests" : "browserify unit_tests/js/Calculator_test.js > unit_tests/js/build/Calculator_test.js"
+
   },
   "repository": {
     "type": "git",

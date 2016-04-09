@@ -1,4 +1,4 @@
-var Matrix = require("Matrix.js");
+var Matrix = require("./Matrix.js");
 
 /**
  * Calculator class
