@@ -5,12 +5,14 @@
   "main": "index.js",
   "devDependencies": {
     "browserify": "latest",
-    "watchify": "latest",
-    "jsdoc": "latest"
+    "jsdoc": "latest",
+    "qunitjs": "^1.23.0",
+    "watchify": "latest"
   },
   "scripts": {
     "build-js": "browserify js/main.js > js/build.js",
-    "watch-js": "watchify js/main.js -o js/build.js"
+    "watch-js": "watchify js/main.js -o js/build.js",
+    "build-tests": "browserify js/unit_tests/Matrix_test.js > js/unit_tests/build/Matrix_test.js"
   },
   "repository": {
     "type": "git",

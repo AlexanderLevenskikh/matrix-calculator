@@ -10,8 +10,13 @@
  */
 
 var Matrix = function (matrixProperties) {
-    this.linesNumber = matrixProperties.linesNumber;
-    this.columnsNumber = matrixProperties.columnsNumber;
+    if (typeof matrixProperties == 'undefined') {
+        return new Error("matrixProperties object is undefined");
+    }
+
+    this.linesNumber = matrixProperties.linesNumber || 2;
+    this.columnsNumber = matrixProperties.columnsNumber || 2;
+
     if (typeof matrixProperties.cellPreprocessing == 'function') {
         this.cellPreprocessing = matrixProperties.cellPreprocessing;
     } else {
@@ -26,7 +31,7 @@ var Matrix = function (matrixProperties) {
 
 Matrix.prototype.initBrowserTable = function() {
     this.table = document.createElement('table');
-    for (var rowIndex = 0; rowIndex < this.linesNumbe; rowIndex++) {
+    for (var rowIndex = 0; rowIndex < this.linesNumber; rowIndex++) {
         var row = document.createElement('tr');
         this.table.appendChild(row);
         for (var columnIndex = 0; columnIndex < this.columnsNumber; columnIndex++) {
@@ -46,7 +51,9 @@ Matrix.prototype.addCellToRow = function(row) {
     row.appendChild(cell);
     cell.appendChild(inputField);
     inputField.setAttribute('type', "text");
-    this.cellPreprocessing.call(inputField);
+    if (this.cellPreprocessing) {
+        this.cellPreprocessing.call(inputField);
+    }
 }
 
 /**
@@ -67,7 +74,7 @@ Matrix.prototype.forEach = function(callback) {
      var cells = currentLine.childNodes;
      Array.prototype.forEach.call(cells, function(currentCell, currentColumnNumber) {
         var inputField = currentCell.firstChild;
-        callback(inputField, currentLineNumber, currentColumnNumber);
+        callback.call(inputField, currentLineNumber, currentColumnNumber);
      });
   });
 };
@@ -203,12 +210,12 @@ Matrix.prototype.multiply = function(matrix, result) {
     var linesNumber = this.linesNumber,
         columnsNumber = matrix.columnsNumber,
         vectorLength = this.columnsNumber;
-
     for (var i = 0; i < linesNumber; i++)
         for (var j = 0; j < columnsNumber; j++) {
             var currentValue = 0;
-            for (var k = 0; k < vectorLength; k++)
+            for (var k = 0; k < vectorLength; k++) {
                 currentValue += this.getValue(i, k) * matrix.getValue(k, j);
+            }
             result.setValue(i, j, currentValue);
         }
     return this;
