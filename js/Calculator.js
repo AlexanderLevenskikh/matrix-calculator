@@ -204,6 +204,7 @@ function callback_commonPart() {
             element.style.backgroundColor = "#bcbcbc";
         }
     });
+
 }
 
 function changeState(f) {
