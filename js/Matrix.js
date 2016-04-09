@@ -35,24 +35,24 @@ Matrix.prototype.initBrowserTable = function() {
         var row = document.createElement('tr');
         this.table.appendChild(row);
         for (var columnIndex = 0; columnIndex < this.columnsNumber; columnIndex++) {
-            this.addCellToRow(row);
+            this.addCellToRow(row, rowIndex, columnIndex);
         }
     }
 };
 
 /**
  * Adds one cell to end of the row
- * @param row {HTMLElement} Current row
+ * @param row {Element} Current row
  */
 
-Matrix.prototype.addCellToRow = function(row) {
+Matrix.prototype.addCellToRow = function(row, rowIndex, columnIndex) {
     var cell = document.createElement('td'),
         inputField = document.createElement('input');
     row.appendChild(cell);
     cell.appendChild(inputField);
     inputField.setAttribute('type', "text");
     if (this.cellPreprocessing) {
-        this.cellPreprocessing.call(inputField);
+        this.cellPreprocessing.call(inputField, rowIndex, columnIndex);
     }
 }
 
@@ -113,11 +113,11 @@ Matrix.prototype.setValue = function(line, column, value) {
 
 /**
  * Append matrix table to some DOM container
- * @param {HTMLElement} container
+ * @param {Element} container
  */
 
 Matrix.prototype.appendTo = function(container) {
-    if (container !== null && typeof container == "object" && container.nodeType) {
+    if (container !== null && typeof container == "object" && container.nodeType == 1) {
         container.appendChild(this.table);
     }
     else {
@@ -198,8 +198,8 @@ Matrix.prototype.deleteColumn = function() {
 
 /**
  * Multiplies by matrix and puts the result to 'result' argument
- * @param matrix {Matrix} Factor
- * @param result {Matrix} Result matrix
+ * @param {Matrix} matrix  Factor
+ * @param {Matrix} result  Result matrix
  * @returns {this}
  */
 
