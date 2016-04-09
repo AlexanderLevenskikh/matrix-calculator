@@ -5,7 +5,8 @@
   "main": "index.js",
   "devDependencies": {
     "browserify": "latest",
-    "watchify": "latest"
+    "watchify": "latest",
+    "jsdoc": "latest"
   },
   "scripts": {
     "build-js": "browserify js/main.js > js/build.js",
