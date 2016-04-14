@@ -1,0 +1,274 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>JSDoc: Source: Matrix.js</title>
+
+    <script src="scripts/prettify/prettify.js"> </script>
+    <script src="scripts/prettify/lang-css.js"> </script>
+    <!--[if lt IE 9]>
+      <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    <link type="text/css" rel="stylesheet" href="styles/prettify-tomorrow.css">
+    <link type="text/css" rel="stylesheet" href="styles/jsdoc-default.css">
+</head>
+
+<body>
+
+<div id="main">
+
+    <h1 class="page-title">Source: Matrix.js</h1>
+
+    
+
+
+
+    
+    <section>
+        <article>
+            <pre class="prettyprint source linenums"><code>/**
+ * Creates the Matrix instance.
+ *
+ * @param {Object} matrixProperties Matrix properties
+ * @param {string} matrixProperties.linesNumber Number of the matrix lines
+ * @param {string} matrixProperties.columnsNumber Number of the matrix columns
+ * @param {function} [matrixProperties.cellPreprocessing] Pre-processing function for each matrix cell
+ * @this {Matrix}
+ * @constructor
+ */
+
+var Matrix = function (matrixProperties) {
+    if (typeof matrixProperties == 'undefined') {
+        return new Error("matrixProperties object is undefined");
+    }
+
+    this.linesNumber = matrixProperties.linesNumber || 2;
+    this.columnsNumber = matrixProperties.columnsNumber || 2;
+
+    if (typeof matrixProperties.cellPreprocessing == 'function') {
+        this.cellPreprocessing = matrixProperties.cellPreprocessing;
+    } else {
+        this.cellPreprocessing = false;
+    }
+    this.initBrowserTable();
+};
+
+/**
+ * Method initializes the DOM table with text fields in table cells. Applies the callback to the cell fields
+ */
+
+Matrix.prototype.initBrowserTable = function() {
+    this.table = document.createElement('table');
+    for (var rowIndex = 0; rowIndex &lt; this.linesNumber; rowIndex++) {
+        var row = document.createElement('tr');
+        this.table.appendChild(row);
+        for (var columnIndex = 0; columnIndex &lt; this.columnsNumber; columnIndex++) {
+            this.addCellToRow(row, rowIndex, columnIndex);
+        }
+    }
+};
+
+/**
+ * Adds one cell to end of the row
+ * @param row {Element} Current row
+ */
+
+Matrix.prototype.addCellToRow = function(row, rowIndex, columnIndex) {
+    var cell = document.createElement('td'),
+        inputField = document.createElement('input');
+    row.appendChild(cell);
+    cell.appendChild(inputField);
+    inputField.setAttribute('type', "text");
+    if (this.cellPreprocessing) {
+        this.cellPreprocessing.call(inputField, rowIndex, columnIndex);
+    }
+}
+
+/**
+ * Goes through every Matrix cell and applies callback to each cell.
+ *
+ * @param {function} callback Processes input element of cell
+ *
+ */
+
+Matrix.prototype.forEach = function(callback) {
+
+  if (typeof callback != 'function') {
+      return new Error("forEach: argument is not a function");
+  }
+
+  var lines = this.table.childNodes;
+  Array.prototype.forEach.call(lines, function(currentLine, currentLineNumber) {
+     var cells = currentLine.childNodes;
+     Array.prototype.forEach.call(cells, function(currentCell, currentColumnNumber) {
+        var inputField = currentCell.firstChild;
+        callback.call(inputField, currentLineNumber, currentColumnNumber);
+     });
+  });
+};
+
+/**
+ * Gets the value from (line, column)
+ * @param {Number} line
+ * @param {Number} column
+ * @returns {*} value
+ */
+
+Matrix.prototype.getValue = function(line, column) {
+    if (line >= 0 &amp;&amp; line &lt; this.linesNumber &amp;&amp; column >= 0 &amp;&amp; column &lt; this.columnsNumber) {
+        var cell = this.table.childNodes[line].childNodes[column];
+        return cell.firstChild.value;
+    } else {
+        return new Error("getValue: cell with coordinates (" + line + "," + column + ") doesn't exist")
+    }
+};
+
+/**
+ * Sets the value to (line, column)
+ * @param {Number} line
+ * @param {Number} column
+ * @param {*} value
+ */
+
+Matrix.prototype.setValue = function(line, column, value) {
+    if (line >= 0 &amp;&amp; line &lt; this.linesNumber &amp;&amp; column >= 0 &amp;&amp; column &lt; this.columnsNumber) {
+        var cell = this.table.childNodes[line].childNodes[column];
+        cell.firstChild.value = value;
+    } else {
+        return new Error("setValue: cell with coordinates (" + line + "," + column + ") doesn't exist")
+    }
+};
+
+/**
+ * Append matrix table to some DOM container
+ * @param {Element} container
+ */
+
+Matrix.prototype.appendTo = function(container) {
+    if (container !== null &amp;&amp; typeof container == "object" &amp;&amp; container.nodeType == 1) {
+        container.appendChild(this.table);
+    }
+    else {
+        return new Error("appendTo: container is not a DOM element");
+    }
+};
+
+/**
+ * adds one line to matrix
+ * @returns {this}
+ */
+
+Matrix.prototype.addLine = function() {
+    var row = document.createElement('tr');
+
+    this.table.appendChild(row);
+    this.linesNumber++;
+
+    for (var i = 0; i &lt; this.columnsNumber; i++) {
+        this.addCellToRow(row, this.linesNumber-1, i);
+    }
+
+    return this;
+};
+
+/**
+ * adds one column to matrix
+ * @returns {this}
+ */
+
+Matrix.prototype.addColumn = function() {
+    var lines = this.table.childNodes;
+    this.columnsNumber++;
+
+    for (var i = 0; i &lt; this.linesNumber; i++) {
+        this.addCellToRow(lines[i], i, this.columnsNumber-1);
+    }
+
+    return this;
+};
+
+/**
+ * Deletes one line from matrix
+ * @returns {this}
+ */
+
+Matrix.prototype.deleteLine = function() {
+    if (this.linesNumber &lt; 2) {
+        return new Error("deleteLine: you can't delete the last line");
+    }
+
+    this.table.removeChild(this.table.lastChild);
+
+    this.linesNumber--;
+
+    return this;
+};
+
+/**
+ * Deletes one column from matrix
+ * @returns {this}
+ */
+
+Matrix.prototype.deleteColumn = function() {
+    if (this.columnsNumber &lt; 2) {
+        return new Error("deleteColumn: you can't delete the last column");
+    }
+
+    var lines = this.table.childNodes;
+    this.columnsNumber--;
+
+    for (var i = 0; i &lt; this.linesNumber; i++) {
+        lines[i].removeChild(lines[i].lastChild);
+    }
+
+    return this;
+};
+
+/**
+ * Multiplies by matrix and puts the result to 'result' argument
+ * @param {Matrix} matrix  Factor
+ * @param {Matrix} result  Result matrix
+ * @returns {this}
+ */
+
+Matrix.prototype.multiply = function(matrix, result) {
+    if (this.columnsNumber != matrix.linesNumber)
+        return new Error("multiply: vector length in first matrix isn't equal to vector length in second matrix");
+
+    var linesNumber = this.linesNumber,
+        columnsNumber = matrix.columnsNumber,
+        vectorLength = this.columnsNumber;
+    for (var i = 0; i &lt; linesNumber; i++)
+        for (var j = 0; j &lt; columnsNumber; j++) {
+            var currentValue = 0;
+            for (var k = 0; k &lt; vectorLength; k++) {
+                currentValue += this.getValue(i, k) * matrix.getValue(k, j);
+            }
+            result.setValue(i, j, currentValue);
+        }
+    return this;
+};
+
+module.exports = Matrix;</code></pre>
+        </article>
+    </section>
+
+
+
+
+</div>
+
+<nav>
+    <h2><a href="index.html">Home</a></h2><h3>Classes</h3><ul><li><a href="Calculator.html">Calculator</a></li><li><a href="Matrix.html">Matrix</a></li></ul>
+</nav>
+
+<br class="clear">
+
+<footer>
+    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.4.0</a> on Thu Apr 14 2016 13:31:28 GMT+0300 (RTZ 2 (зима))
+</footer>
+
+<script> prettyPrint(); </script>
+<script src="scripts/linenumber.js"> </script>
+</body>
+</html>
